@@ -1,0 +1,28 @@
+/**
+ * Import fonts either via @import url (e.g. from Googlee Fonts)
+ * or via @font-face when font files are stored locally in /app/fonts
+ */
+
+
+// @import url(http://fonts.googleapis.com/css?family=Roboto:700,400,300);
+
+@font-face {
+    font-family: 'Roboto';
+    src: url(../fonts/Roboto-Light.ttf) format("truetype");
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url(../fonts/Roboto-Regular.ttf) format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url(../fonts/Roboto-Bold.ttf) format("truetype");
+    font-weight: 700;
+    font-style: normal;
+}

@@ -1,0 +1,30 @@
+<ion-side-menus>
+    <!-- Center content -->
+    <ion-side-menu-content>
+
+        <ion-nav-view name="viewContent">
+
+        </ion-nav-view>
+    </ion-side-menu-content>
+
+    <!-- Left menu -->
+    <ion-side-menu side="left" class="side-menu">
+
+        <ion-header-bar align-title="center" class="bar-positive">
+            <h1 class="title">Side Menu</h1>
+        </ion-header-bar>
+
+        <ion-content class="has-header">
+            <div class="list">
+                <a menu-close class="item item-icon-left" ui-sref-active="active" ui-sref="app.home">
+                    <i class="icon ion-home"></i>
+                    Home
+                </a>
+                <a menu-close class="item item-icon-left" ui-sref-active="active" ui-sref="app.settings">
+                    <i class="icon ion-settings"></i>
+                    Settings
+                </a>
+            </div>
+        </ion-content>
+    </ion-side-menu>
+</ion-side-menus>

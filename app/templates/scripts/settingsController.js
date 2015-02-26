@@ -7,8 +7,8 @@
  * # SettingsController
  */
 angular.module('<%= ngModulName %>')
-    .controller('SettingsController', function($scope) {
+  .controller('SettingsController', function($scope) {
 
-        // do something with $scope
+    // do something with $scope
 
-    });
+  });

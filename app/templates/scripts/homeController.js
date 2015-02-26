@@ -7,8 +7,8 @@
  * # HomeController
  */
 angular.module('<%= ngModulName %>')
-    .controller('HomeController', function($scope) {
+  .controller('HomeController', function($scope) {
 
-        // do something with $scope
+    // do something with $scope
 
-    });
+  });

@@ -36,10 +36,10 @@ var targetDir = path.resolve(build ? 'www' : '.tmp');
 // if we just use emualate or run without specifying platform, we assume iOS
 // in this case the value returned from yargs would just be true
 if (emulate === true) {
-    emulate = 'ios';
+  emulate = 'ios';
 }
 if (run === true) {
-    run = 'ios';
+  run = 'ios';
 }
 
 // global error handler
@@ -64,7 +64,7 @@ gulp.task('styles', function() {
                 { style: 'expanded' };
 
   var sassStream = plugins.rubySass('app/styles/main.scss', options)
-      .pipe(plugins.autoprefixer('last 1 Chrome version', 'last 3 iOS versions', 'last 3 Android versions'))
+    .pipe(plugins.autoprefixer('last 1 Chrome version', 'last 3 iOS versions', 'last 3 Android versions'))
 
   var cssStream = gulp
     .src('bower_components/ionic/css/ionic.min.css');
@@ -138,7 +138,7 @@ gulp.task('templates', function() {
 // generate iconfont
 gulp.task('iconfont', function(){
   return gulp.src('app/icons/*.svg', {
-        buffer: false
+      buffer: false
     })
     .pipe(plugins.iconfontCss({
       fontName: 'ownIconFont',

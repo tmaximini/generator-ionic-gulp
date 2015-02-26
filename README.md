@@ -3,7 +3,7 @@
 
 > A [Yeoman](http://yeoman.io) generator for Ionic Projects with Gulp
 
-This is a yeoman generator for my [Ionic Gulp Seed](https://github.com/tmaximini/ionic-gulp-seed), to get things set up faster. It sets up everything to get you started with Gulp and Ionic in no time.
+This is a yeoman generator for my [Ionic Gulp Seed](https://github.com/tmaximini/ionic-gulp-seed), to get things set up faster. It sets up everything to get you started with [Gulp](http://gulpjs.com/) and [Ionic](http://ionicframework.com/) in no time.
 
 
 ### What is Yeoman?

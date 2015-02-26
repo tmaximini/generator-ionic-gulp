@@ -86,6 +86,9 @@ module.exports = yeoman.generators.Base.extend({
 
       this.directory('app', 'app');
 
+      this.mkdir('app/icons');
+      this.mkdir('app/images');
+
       this.fs.copyTpl(
         this.templatePath('index.html'),
         this.destinationPath('app/index.html'),

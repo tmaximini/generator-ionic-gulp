@@ -85,6 +85,7 @@ module.exports = yeoman.generators.Base.extend({
       );
 
       this.directory('app', 'app');
+      this.directory('hooks', 'hooks');
 
       this.mkdir('app/icons');
       this.mkdir('app/images');

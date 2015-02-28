@@ -1,9 +1,6 @@
+# A [Yeoman](http://yeoman.io) generator for Ionic Projects with Gulp
 
-# generator-ionic-gulp
-
-> A [Yeoman](http://yeoman.io) generator for Ionic Projects with Gulp
-
-This is a yeoman generator for my [Ionic Gulp Seed](https://github.com/tmaximini/ionic-gulp-seed), to get things set up faster. It sets up everything to get you started with [Gulp](http://gulpjs.com/) and [Ionic](http://ionicframework.com/) in no time.
+This is a yeoman generator for my [Ionic Gulp Seed](https://github.com/tmaximini/ionic-gulp-seed), a minimal Ionic app template. It sets up everything to get you started with [Gulp](http://gulpjs.com/) and [Ionic](http://ionicframework.com/) in no time.
 
 
 ### Features
@@ -13,7 +10,7 @@ This is a yeoman generator for my [Ionic Gulp Seed](https://github.com/tmaximini
 * Local development server with live reload
 * Automatically inject all your JS sources into `index.html`
 * Auto min-safe all Angular DI through `ng-annotate`, no need to use weird bracket notation
-* Comes already with [ng-cordova](http://ngcordova.com/) and [lodash](https://lodash.com)
+* Comes already with [ng-cordova](http://ngcordova.com/) and [lodash](https://lodash.com) included
 * generate icon font from svg files
 * Blazing fast
 

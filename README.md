@@ -17,6 +17,8 @@ This is a yeoman generator for my [Ionic Gulp Seed](https://github.com/tmaximini
 
 ### Installation
 
+[![NPM](https://nodei.co/npm/generator-ionic-gulp.png?downloads=true)](https://nodei.co/npm/generator-ionic-gulp/)
+
 You should have Yeoman installed globally
 
 ```bash

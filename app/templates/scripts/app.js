@@ -58,6 +58,6 @@ angular.module('<%= ngModulName %>', ['ionic', 'ngCordova', 'ngResource'])
 
     // redirects to default route for undefined routes
     $urlRouterProvider.otherwise('/app/home');
-  })
+  });
 
 

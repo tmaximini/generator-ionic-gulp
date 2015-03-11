@@ -27,7 +27,7 @@ var args = require('yargs')
     .default('port', 9000)
     .argv;
 
-var build = args.build || args.emulate || args.run;
+var build = !!(args.build || args.emulate || args.run);
 var emulate = args.emulate;
 var run = args.run;
 var port = args.port;

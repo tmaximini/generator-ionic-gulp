@@ -245,6 +245,17 @@ gulp.task('ionic:run', plugins.shell.task([
   'ionic run ' + run
 ]));
 
+// ionic resources wrapper
+gulp.task('icon', plugins.shell.task([
+  'ionic resources --icon'
+]));
+gulp.task('splash', plugins.shell.task([
+  'ionic resources --splash'
+]));
+gulp.task('resources', plugins.shell.task([
+  'ionic resources'
+]));
+
 // start watchers
 gulp.task('watchers', function() {
   plugins.livereload.listen();

@@ -11,44 +11,61 @@ module.exports = yeoman.generators.Base.extend({
     this.pkg = require('../package.json');
   },
 
-  prompting: function () {
-    var done = this.async();
+  prompting: {
 
-    // Have Yeoman greet the user.
-    this.log(yosay(
-      'Welcome to the ' + chalk.red('ionic-gulp') + ' generator. Let\'s build an ionic app, shall we?'
-    ));
+    askForNames: function askForNames() {
+      var done = this.async();
 
-    var prompts = [{
-      type: 'input',
-      name: 'appName',
-      message: 'What\'s the app name?',
-      default : this.appname // Default to current folder name
+      // Have Yeoman greet the user.
+      this.log(yosay(
+        'Welcome to the ' + chalk.red('ionic-gulp') + ' generator. Let\'s build an ionic app, shall we?'
+      ));
+
+      var prompts = [{
+        type: 'input',
+        name: 'appName',
+        message: 'What\'s the app name?',
+        default : this.appname // Default to current folder name
+      },
+      {
+        type: 'input',
+        name: 'userName',
+        message: 'The author\'s name? (for config files)',
+        default : 'Joe Dirt'
+      },
+      {
+        type: 'input',
+        name: 'userMail',
+        message: 'Author email? (for config files)',
+        default : 'email@example.com'
+
+      }];
+
+      this.prompt(prompts, function(props) {
+        this.appName = props.appName;
+        this.userName = props.userName;
+        this.userMail = props.userMail;
+        done();
+      }.bind(this));
     },
-    {
-      type: 'input',
-      name: 'userName',
-      message: 'Tell me your name please (for config files)?',
-      default : 'Joe Dirt'
-    },
-    {
-      type: 'input',
-      name: 'userMail',
-      message: 'Your email (for config files)?',
-      default : 'email@example.com'
+
+    askForAppId: function askForAppId() {
+      var done = this.async();
+      this.prompt([{
+        type: 'input',
+        name: 'appId',
+        message: 'The app id?',
+        default : 'com.' + this._.classify(this.userName).toLowerCase() + '.' + this._.classify(this.appName).toLowerCase()
+      }], function (props) {
+        this.appId = props.appId;
+        done();
+      }.bind(this));
     }
 
-    ];
-
-    this.prompt(prompts, function (props) {
-      this.appName = props.appName;
-      this.userName = props.userName;
-      this.userMail = props.userMail;
-      done();
-    }.bind(this));
   },
 
   writing: {
+
     app: function () {
       this.fs.copyTpl(
         this.templatePath('_package.json'),
@@ -70,7 +87,7 @@ module.exports = yeoman.generators.Base.extend({
         { appName: this.appName,
           userName: this.userName,
           userEmail: this.userMail,
-          widgetId: 'com.' + this._.classify(this.userName).toLowerCase() + '.' + this._.classify(this.appName).toLowerCase() }
+          widgetId: this.appId }
       );
     },
 
@@ -93,6 +110,7 @@ module.exports = yeoman.generators.Base.extend({
 
       this.mkdir('app/icons');
       this.mkdir('app/images');
+      this.mkdir('resources');
 
       this.fs.copyTpl(
         this.templatePath('index.html'),
@@ -141,7 +159,17 @@ module.exports = yeoman.generators.Base.extend({
         this.destinationPath('vendor.json')
       );
 
+      this.fs.copy(
+        this.templatePath('splash.png'),
+        this.destinationPath('resources/splash.png')
+      );
+
+      this.fs.copy(
+        this.templatePath('icon.png'),
+        this.destinationPath('resources/icon.png')
+      );
     }
+
   },
 
   install: function () {

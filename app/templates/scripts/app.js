@@ -2,7 +2,7 @@
 
 /**
  * @ngdoc overview
- * @name IonicGulpSeed
+ * @name <%= ngModulName %>
  * @description
  * # Initializes main application and routing
  *
@@ -15,7 +15,7 @@ angular.module('<%= ngModulName %>', ['ionic', 'ngCordova', 'ngResource'])
   .run(function($ionicPlatform) {
 
     $ionicPlatform.ready(function() {
-        // save to use plugins here
+      // save to use plugins here
     });
 
     // add possible global event handlers here

@@ -1,0 +1,15 @@
+#!/bin/bash
+export DEVICES=`ios-sim showdevicetypes 2>&1`
+export DEVICES=\"`echo $DEVICES | sed -e 's/ com./" "com./g' | sed -e 's/, /,~/g'`\"
+PS3='Please enter your choice: '
+options=($DEVICES)
+app="`find ./platforms/ios/build/emulator/ -name *.app -print`"
+escaped_app="\"$app\""
+
+echo $app
+select opt in "${options[@]}"
+do
+    case $opt in
+        *) echo ios-sim launch "$escaped_app" --devicetypeid "`echo $opt | sed -e "s/~/ /g"`" --stderr ./platforms/ios/cordova/console.log --stdout ./platforms/ios/cordova/console.log > tmp.run.file;chmod +x tmp.run.file;./tmp.run.file;rm tmp.run.file;exit;
+    esac
+done

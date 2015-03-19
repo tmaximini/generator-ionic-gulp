@@ -14,7 +14,7 @@ var connectLr = require('connect-livereload');
 var streamqueue = require('streamqueue');
 var runSequence = require('run-sequence');
 var merge = require('merge-stream');
-
+var ripple = require('ripple-emulator');
 
 /**
  * Parse arguments
@@ -23,23 +23,27 @@ var args = require('yargs')
     .alias('e', 'emulate')
     .alias('b', 'build')
     .alias('r', 'run')
+    // remove all debug messages (console.logs, alerts etc) from release build
+    .alias('release', 'strip-debug')
     .default('build', false)
     .default('port', 9000)
+    .default('strip-debug', false)
     .argv;
 
 var build = !!(args.build || args.emulate || args.run);
 var emulate = args.emulate;
 var run = args.run;
 var port = args.port;
+var stripDebug = !!args.stripDebug;
 var targetDir = path.resolve(build ? 'www' : '.tmp');
 
 // if we just use emualate or run without specifying platform, we assume iOS
 // in this case the value returned from yargs would just be true
 if (emulate === true) {
-  emulate = 'ios';
+    emulate = 'ios';
 }
 if (run === true) {
-  run = 'ios';
+    run = 'ios';
 }
 
 // global error handler
@@ -52,6 +56,7 @@ var errorHandler = function(error) {
   }
 };
 
+
 // clean target dir
 gulp.task('clean', function(done) {
   del([targetDir], done);
@@ -59,12 +64,11 @@ gulp.task('clean', function(done) {
 
 // precompile .scss and concat with ionic.css
 gulp.task('styles', function() {
-  var options = build ?
-                { style: 'compressed' } :
-                { style: 'expanded' };
+
+  var options = build ? { style: 'compressed' } : { style: 'expanded' };
 
   var sassStream = plugins.rubySass('app/styles/main.scss', options)
-    .pipe(plugins.autoprefixer('last 1 Chrome version', 'last 3 iOS versions', 'last 3 Android versions'))
+      .pipe(plugins.autoprefixer('last 1 Chrome version', 'last 3 iOS versions', 'last 3 Android versions'))
 
   var cssStream = gulp
     .src('bower_components/ionic/css/ionic.min.css');
@@ -72,7 +76,7 @@ gulp.task('styles', function() {
   return streamqueue({ objectMode: true }, cssStream, sassStream)
     .pipe(plugins.concat('main.css'))
     .pipe(plugins.if(build, plugins.stripCssComments()))
-    .pipe(plugins.if(build, plugins.rev()))
+    .pipe(plugins.if(build && !emulate, plugins.rev()))
     .pipe(gulp.dest(path.join(targetDir, 'styles')))
     .on('error', errorHandler);
 });
@@ -81,7 +85,7 @@ gulp.task('styles', function() {
 // build templatecache, copy scripts.
 // if build: concat, minsafe, uglify and versionize
 gulp.task('scripts', function() {
-  var dest = path.join(targetDir, build ? '' : 'scripts');
+  var dest = path.join(targetDir, 'scripts');
 
   var minifyConfig = {
     collapseWhitespace: true,
@@ -107,9 +111,10 @@ gulp.task('scripts', function() {
 
   return streamqueue({ objectMode: true }, scriptStream, templateStream)
     .pipe(plugins.if(build, plugins.ngAnnotate()))
+    .pipe(plugins.if(stripDebug, plugins.stripDebug()))
     .pipe(plugins.if(build, plugins.concat('app.js')))
     .pipe(plugins.if(build, plugins.uglify()))
-    .pipe(plugins.if(build, plugins.rev()))
+    .pipe(plugins.if(build && !emulate, plugins.rev()))
 
     .pipe(gulp.dest(dest))
 
@@ -138,7 +143,7 @@ gulp.task('templates', function() {
 // generate iconfont
 gulp.task('iconfont', function(){
   return gulp.src('app/icons/*.svg', {
-      buffer: false
+        buffer: false
     })
     .pipe(plugins.iconfontCss({
       fontName: 'ownIconFont',
@@ -189,10 +194,10 @@ gulp.task('vendor', function() {
 
 
 // inject the files in index.html
-gulp.task('index', function() {
+gulp.task('index', ['jsHint', 'scripts'], function() {
 
   // build has a '-versionnumber' suffix
-  var cssNaming = build ? 'styles/main-*' : 'styles/main*';
+  var cssNaming = 'styles/main*';
 
   // injects 'src' into index.html at position 'tag'
   var _inject = function(src, tag) {
@@ -218,7 +223,7 @@ gulp.task('index', function() {
     .pipe(_inject(gulp.src('vendor*.js', { cwd: targetDir }), 'vendor'))
     // inject app.js (build) or all js files indivually (dev)
     .pipe(plugins.if(build,
-      _inject(gulp.src('app*.js', { cwd: targetDir }), 'app'),
+      _inject(gulp.src('scripts/app*.js', { cwd: targetDir }), 'app'),
       _inject(_getAllScriptSources(), 'app')
     ))
 
@@ -232,12 +237,12 @@ gulp.task('serve', function() {
     .use(!build ? connectLr() : function(){})
     .use(express.static(targetDir))
     .listen(port);
-  open('http://localhost:' + port + '/', 'Google Chrome');
+  open('http://localhost:' + port + '/');
 });
 
 // ionic emulate wrapper
 gulp.task('ionic:emulate', plugins.shell.task([
-  'ionic emulate ' + emulate
+  'ionic emulate ' + emulate + ' --livereload --consolelogs'
 ]));
 
 // ionic run wrapper
@@ -256,6 +261,27 @@ gulp.task('resources', plugins.shell.task([
   'ionic resources'
 ]));
 
+// select emulator device
+gulp.task('select', plugins.shell.task([
+  './helpers/emulateios'
+]));
+
+// ripple emulator
+gulp.task('ripple', ['scripts', 'styles', 'watchers'], function() {
+
+  var options = {
+    keepAlive: false,
+    open: true,
+    port: 4400
+  };
+
+  // Start the ripple server
+  ripple.emulate.start(options);
+
+  open('http://localhost:' + options.port + '?enableripple=true');
+});
+
+
 // start watchers
 gulp.task('watchers', function() {
   plugins.livereload.listen();
@@ -263,9 +289,9 @@ gulp.task('watchers', function() {
   gulp.watch('app/fonts/**', ['fonts']);
   gulp.watch('app/icons/**', ['iconfont']);
   gulp.watch('app/images/**', ['images']);
-  gulp.watch('app/scripts/**/*.js', ['jsHint', 'scripts', 'index']);
+  gulp.watch('app/scripts/**/*.js', ['index']);
   gulp.watch('./vendor.json', ['vendor']);
-  gulp.watch('app/templates/**/*.html', ['scripts', 'index']);
+  gulp.watch('app/templates/**/*.html', ['index']);
   gulp.watch('app/index.html', ['index']);
   gulp.watch(targetDir + '/**')
     .on('change', plugins.livereload.changed)
@@ -285,14 +311,12 @@ gulp.task('default', function(done) {
       'templates',
       'styles',
       'images',
-      'jsHint',
-      'scripts',
       'vendor'
     ],
     'index',
     build ? 'noop' : 'watchers',
     build ? 'noop' : 'serve',
-    emulate ? 'ionic:emulate' : 'noop',
+    emulate ? ['ionic:emulate', 'watchers'] : 'noop',
     run ? 'ionic:run' : 'noop',
     done);
 });

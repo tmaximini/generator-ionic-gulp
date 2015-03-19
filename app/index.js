@@ -66,7 +66,7 @@ module.exports = yeoman.generators.Base.extend({
 
   writing: {
 
-    app: function () {
+    setup: function () {
       this.fs.copyTpl(
         this.templatePath('_package.json'),
         this.destinationPath('package.json'),
@@ -89,9 +89,13 @@ module.exports = yeoman.generators.Base.extend({
           userEmail: this.userMail,
           widgetId: this.appId }
       );
-    },
 
-    projectfiles: function () {
+      this.fs.copyTpl(
+        this.templatePath('_gulpfile.js'),
+        this.destinationPath('gulpfile.js'),
+        { ngModulName: this._.classify(this.appName) }
+      );
+
       this.fs.copy(
         this.templatePath('editorconfig'),
         this.destinationPath('.editorconfig')
@@ -104,6 +108,18 @@ module.exports = yeoman.generators.Base.extend({
         this.templatePath('jshintrc'),
         this.destinationPath('.jshintrc')
       );
+
+      this.mkdir('helpers');
+      this.mkdir('www');
+
+      this.fs.copy(
+        this.templatePath('helpers/emulateios'),
+        this.destinationPath('helpers/emulateios')
+      );
+
+    },
+
+    projectfiles: function () {
 
       this.directory('app', 'app');
       this.directory('hooks', 'hooks');
@@ -124,6 +140,7 @@ module.exports = yeoman.generators.Base.extend({
         { title: this.appName }
       );
 
+      // controllers
       this.fs.copyTpl(
         this.templatePath('scripts/homeController.js'),
         this.destinationPath('app/scripts/controllers/homeController.js'),
@@ -142,15 +159,38 @@ module.exports = yeoman.generators.Base.extend({
         { ngModulName: this._.classify(this.appName) }
       );
 
+      // services
       this.fs.copyTpl(
-        this.templatePath('scripts/app.js'),
-        this.destinationPath('app/scripts/app.js'),
+        this.templatePath('scripts/ExampleService.js'),
+        this.destinationPath('app/scripts/services/ExampleService.js'),
         { ngModulName: this._.classify(this.appName) }
       );
 
       this.fs.copyTpl(
-        this.templatePath('_gulpfile.js'),
-        this.destinationPath('gulpfile.js'),
+        this.templatePath('scripts/ApiService.js'),
+        this.destinationPath('app/scripts/services/ApiService.js'),
+        { ngModulName: this._.classify(this.appName) }
+      );
+
+      // config
+      this.fs.copyTpl(
+        this.templatePath('scripts/apiEndpoint.js'),
+        this.destinationPath('app/scripts/config/apiEndpoint.js'),
+        { ngModulName: this._.classify(this.appName) }
+      );
+
+      // utils
+      this.fs.copyTpl(
+        this.templatePath('scripts/lodash.js'),
+        this.destinationPath('app/scripts/utils/lodash.js'),
+        { ngModulName: this._.classify(this.appName) }
+      );
+
+      // app
+
+      this.fs.copyTpl(
+        this.templatePath('scripts/app.js'),
+        this.destinationPath('app/scripts/app.js'),
         { ngModulName: this._.classify(this.appName) }
       );
 

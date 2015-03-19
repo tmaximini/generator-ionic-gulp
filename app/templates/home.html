@@ -5,10 +5,14 @@
     </ion-header-bar>
 
     <ion-content>
-        <div class="content">
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis magni corporis atque dignissimos alias quasi, culpa deserunt molestias provident quam, voluptates repudiandae ex quibusdam illum. Fugiat distinctio consequuntur vel recusandae.
-            </p>
+        <ion-refresher
+            pulling-text="Pull to refresh..."
+            on-refresh="fetchRandomText()">
+        </ion-refresher>
+        <div class="loader" ng-if="!myHTML">
+            <ion-spinner></ion-spinner>
+        </div>
+        <div class="content" ng-bind-html="myHTML">
         </div>
     </ion-content>
 

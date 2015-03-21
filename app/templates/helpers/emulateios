@@ -3,7 +3,8 @@ export DEVICES=`ios-sim showdevicetypes 2>&1`
 export DEVICES=\"`echo $DEVICES | sed -e 's/ com./" "com./g' | sed -e 's/, /,~/g'`\"
 PS3='Please enter your choice: '
 options=($DEVICES)
-app="`find ./platforms/ios/build/emulator/ -name *.app -print`"
+curpath="$(cd "$(dirname "$1")"; pwd)/$(basename "$1")"
+app="`find $curpath/platforms/ios/build/emulator -name *.app -print`"
 escaped_app="\"$app\""
 
 echo $app

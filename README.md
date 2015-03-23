@@ -83,7 +83,7 @@ By running `gulp -e <platform>`, we can run our app in the simulator
 
 #### Emulate a specific iOS device
 
-By running `gulp select` you will se a prompt where you can choose which ios device to emualte. In this case, livereload inside iOS simulator will not work.
+By running `gulp select` you will se a prompt where you can choose which ios device to emulate. This works only when you have the `gulp -e` task running in one terminal window and run `gulp select` in another terminal window.
 
 
 #### Ripple Emulator

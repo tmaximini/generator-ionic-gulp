@@ -7,9 +7,15 @@
  * # ApiService
  * Retrieves correct api to make requests against.
  * Uses settings from API_ENDPOINT defined in /config/apiEndpoint.js
+ *
+ * Usage example: $http({
+ *                      url: ApiService.getEndPoint() + '/things',
+ *                      method: 'GET'
+ *                 })
+ *
  */
 angular.module('<%= ngModulName %>')
-  .factory('apiService', function($window, $http, API_ENDPOINT) {
+  .factory('ApiService', function($window, $http, API_ENDPOINT) {
 
     var _api = API_ENDPOINT;
     var endpoint = _api.port ? (_api.host + ':' + _api.port + _api.path) : (_api.host + _api.path);

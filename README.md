@@ -43,6 +43,8 @@ gulp
 ```
 to start up the build job and file watchers.
 
+In order to compile Sass, you need to have ruby and the sass ruby gem installed: `gem install sass`.
+
 ## Workflow
 
 This doc assumes you have `gulp` globally installed (`npm install -g gulp`).

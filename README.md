@@ -104,6 +104,14 @@ By running `gulp -r <platform>`, we can run our app on a connected device
 
 Replace `splash.png` and `icon.png` inside `/resources`. Then run `ionic resources`. If you only want to regenerate icons or splashs, you can run `gulp icon` or `gulp splash` shorthand.
 
+## Changelog
+
+#### 1.2.0
+- Drop rubySass in favor of libsass
+- compile Ionic .scss dynamically so we can support custom themes
+- update to ionic 1.0.0
+- update to ngCordova 0.1.17-alpha
+- update ro lodash 3.9.3
 
 ## License
 

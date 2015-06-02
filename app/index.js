@@ -31,7 +31,7 @@ module.exports = yeoman.generators.Base.extend({
         type: 'input',
         name: 'userName',
         message: 'The author\'s name? (for config files)',
-        default : 'Joe Dirt'
+        default : 'Your Name'
       },
       {
         type: 'input',

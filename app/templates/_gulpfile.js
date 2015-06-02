@@ -15,6 +15,7 @@ var streamqueue = require('streamqueue');
 var runSequence = require('run-sequence');
 var merge = require('merge-stream');
 var ripple = require('ripple-emulator');
+var sass = require('gulp-sass');
 
 /**
  * Parse arguments
@@ -67,13 +68,24 @@ gulp.task('styles', function() {
 
   var options = build ? { style: 'compressed' } : { style: 'expanded' };
 
-  var sassStream = plugins.rubySass('app/styles/main.scss', options)
-      .pipe(plugins.autoprefixer('last 1 Chrome version', 'last 3 iOS versions', 'last 3 Android versions'))
+  var sassStream = gulp.src('app/styles/main.scss')
+    .pipe(sass(options))
+    .on('error', function(err) {
+      console.log('err: ', err);
+      beep();
+    });
 
-  var cssStream = gulp
-    .src('bower_components/ionic/css/ionic.min.css');
 
-  return streamqueue({ objectMode: true }, cssStream, sassStream)
+  // build ionic css dynamically to support custom themes
+  var ionicStream = gulp.src('bower_components/ionic/scss/ionic.scss')
+    .pipe(sass(options))
+    .on('error', function(err) {
+        console.log('err: ', err);
+        beep();
+      });
+
+  return streamqueue({ objectMode: true }, ionicStream, sassStream)
+    .pipe(plugins.autoprefixer('last 1 Chrome version', 'last 3 iOS versions', 'last 3 Android versions'))
     .pipe(plugins.concat('main.css'))
     .pipe(plugins.if(build, plugins.stripCssComments()))
     .pipe(plugins.if(build && !emulate, plugins.rev()))
@@ -124,7 +136,7 @@ gulp.task('scripts', function() {
 // copy fonts
 gulp.task('fonts', function() {
   return gulp
-    .src(['app/fonts/*.*', 'bower_components/ionic/fonts/*.*'])
+    .src(['app/fonts/*.*', 'bower_components/ionic/release/fonts/*.*'])
 
     .pipe(gulp.dest(path.join(targetDir, 'fonts')))
 

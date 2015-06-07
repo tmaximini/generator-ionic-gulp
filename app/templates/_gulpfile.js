@@ -15,7 +15,6 @@ var streamqueue = require('streamqueue');
 var runSequence = require('run-sequence');
 var merge = require('merge-stream');
 var ripple = require('ripple-emulator');
-var sass = require('gulp-sass');
 
 /**
  * Parse arguments
@@ -69,7 +68,7 @@ gulp.task('styles', function() {
   var options = build ? { style: 'compressed' } : { style: 'expanded' };
 
   var sassStream = gulp.src('app/styles/main.scss')
-    .pipe(sass(options))
+    .pipe(plugins.sass(options))
     .on('error', function(err) {
       console.log('err: ', err);
       beep();
@@ -78,7 +77,10 @@ gulp.task('styles', function() {
 
   // build ionic css dynamically to support custom themes
   var ionicStream = gulp.src('bower_components/ionic/scss/ionic.scss')
-    .pipe(sass(options))
+    .pipe(plugins.cached('ionic-styles'))
+    .pipe(plugins.sass(options))
+    // cache and remember ionic .scss in order to cut down re-compile time
+    .pipe(plugins.remember('ionic-styles'))
     .on('error', function(err) {
         console.log('err: ', err);
         beep();

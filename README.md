@@ -106,6 +106,11 @@ Replace `splash.png` and `icon.png` inside `/resources`. Then run `ionic resourc
 
 ## Changelog
 
+#### 1.2.2
+- update to ionic 1.0.1
+- keep angular explicitly on 1.3.x branch until Ionic officialy supports 1.4.x [see this thread](http://forum.ionicframework.com/t/angular-1-4-and-ionic/21458/12)
+
+
 #### 1.2.0
 - Drop rubySass in favor of libsass
 - compile Ionic .scss dynamically so we can support custom themes

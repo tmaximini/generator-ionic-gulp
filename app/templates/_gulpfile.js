@@ -76,17 +76,17 @@ gulp.task('styles', function() {
 
 
   // build ionic css dynamically to support custom themes
-  // var ionicStream = gulp.src('bower_components/ionic/scss/ionic.scss')
-  //   .pipe(plugins.cached('ionic-styles'))
-  //   .pipe(plugins.sass(options))
-  //   // cache and remember ionic .scss in order to cut down re-compile time
-  //   .pipe(plugins.remember('ionic-styles'))
-  //   .on('error', function(err) {
-  //       console.log('err: ', err);
-  //       beep();
-  //     });
+  var ionicStream = gulp.src('app/styles/ionic-variables.scss')
+    .pipe(plugins.cached('ionic-styles'))
+    .pipe(plugins.sass(options))
+    // cache and remember ionic .scss in order to cut down re-compile time
+    .pipe(plugins.remember('ionic-styles'))
+    .on('error', function(err) {
+        console.log('err: ', err);
+        beep();
+      });
 
-  return streamqueue({ objectMode: true }, sassStream)
+  return streamqueue({ objectMode: true }, ionicStream, sassStream)
     .pipe(plugins.autoprefixer('last 1 Chrome version', 'last 3 iOS versions', 'last 3 Android versions'))
     .pipe(plugins.concat('main.css'))
     .pipe(plugins.if(build, plugins.stripCssComments()))

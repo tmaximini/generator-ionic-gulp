@@ -75,7 +75,7 @@ gulp.task('styles', function() {
     });
 
   // build ionic css dynamically to support custom themes
-  var ionicStream = gulp.src('app/styles/ionic.scss')
+  var ionicStream = gulp.src('app/styles/ionic-styles.scss')
     .pipe(plugins.cached('ionic-styles'))
     .pipe(plugins.sass(options))
     // cache and remember ionic .scss in order to cut down re-compile time

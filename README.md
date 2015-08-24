@@ -10,6 +10,7 @@ This is a yeoman generator for my [Ionic Gulp Seed](https://github.com/tmaximini
 * Local development server with live reload, even inside ios emulator
 * Automatically inject all your JS sources into `index.html`
 * Auto min-safe all Angular DI through `ng-annotate`, no need to use weird bracket notation
+* Easily customize Ionic styles from within your Sass
 * Comes already with [ng-cordova](http://ngcordova.com/) and [lodash](https://lodash.com) included
 * generate icon font from svg files
 * Blazing fast
@@ -104,7 +105,17 @@ By running `gulp -r <platform>`, we can run our app on a connected device
 
 Replace `splash.png` and `icon.png` inside `/resources`. Then run `ionic resources`. If you only want to regenerate icons or splashs, you can run `gulp icon` or `gulp splash` shorthand.
 
+### customizin themes
+
+Just override any Ionic variables in `app/styles/ionic-styles.scss`. 
+
+
 ## Changelog
+
+#### 1.3.0
+- easier handling of custom ionic theming through `app/styles/ionic-styles.scss` thanks @superthing001
+- use `ionic.bundle.js` to reduce bower dependencies in `vendor.json`
+- fix iconfont: missing own-icons-template.css
 
 #### 1.2.2
 - update to ionic 1.0.1

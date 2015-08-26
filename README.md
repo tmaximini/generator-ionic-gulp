@@ -112,6 +112,9 @@ Just override any Ionic variables in `app/styles/ionic-styles.scss`.
 
 ## Changelog
 
+#### 1.3.1
+- bump to ionic 1.1.0 which uses angular 1.4.x - changelog http://forum.ionicframework.com/t/1-1-0-xenon-xerus-released/30475
+
 #### 1.3.0
 - easier handling of custom ionic theming through `app/styles/ionic-styles.scss` thanks @superthing001
 - use `ionic.bundle.js` to reduce bower dependencies in `vendor.json`

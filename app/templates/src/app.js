@@ -2,7 +2,7 @@
 
 /**
  * @ngdoc overview
- * @name CTASpore
+ * @name <%= ngModulName %>
  * @description
  * # Initializes main application and routing
  *

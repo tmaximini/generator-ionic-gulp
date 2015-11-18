@@ -2,7 +2,7 @@
 
 /**
  * @ngdoc function
- * @name CTASpore.controller:MainController
+ * @name <%= ngModulName %>.controller:MainController
  * @description
  * # MainController
  */

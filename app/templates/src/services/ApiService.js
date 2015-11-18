@@ -2,7 +2,7 @@
 
 /**
  * @ngdoc service
- * @name CTASpore.ApiService
+ * @name <%= ngModulName %>.ApiService
  * @description
  * # ApiService
  * Retrieves correct api to make requests against.

@@ -2,7 +2,7 @@
 
 /**
  * @ngdoc function
- * @name CTASpore.serive:ExampleService
+ * @name <%= ngModulName %>.service:ExampleService
  * @description
  * # ExampleService
  */

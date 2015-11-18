@@ -2,7 +2,7 @@
 
 /**
  * @ngdoc function
- * @name CTASpore.controller:HomeController
+ * @name <%= ngModulName %>.controller:HomeController
  * @description
  * # HomeController
  */

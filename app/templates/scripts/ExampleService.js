@@ -2,7 +2,7 @@
 
 /**
  * @ngdoc function
- * @name <%= ngModulName %>.serive:ExampleService
+ * @name <%= ngModulName %>.service:ExampleService
  * @description
  * # ExampleService
  */

@@ -13,6 +13,7 @@ This is a yeoman generator for my [Ionic Gulp Seed](https://github.com/tmaximini
 * Easily customize Ionic styles from within your Sass
 * Comes already with [ng-cordova](http://ngcordova.com/) and [lodash](https://lodash.com) included
 * generate icon font from svg files
+* optional browserify support
 * Blazing fast
 
 
@@ -38,7 +39,7 @@ Finally, initiate the generator:
 yo ionic-gulp
 ```
 
-after installation, just run: 
+after installation, just run:
 ```bash
 gulp
 ```
@@ -57,12 +58,26 @@ By running just `gulp`, we start our development build process, consisting of:
 
 - compiling, concatenating, auto-prefixing of all `.scss` files required by `app/styles/main.scss`
 - creating `vendor.js` file from external sources defined in `./vendor.json`
-- linting all `*.js` files `app/scripts`, see `.jshintrc` for ruleset
+- linting all `*.js` files `app/scripts` (or src/ if using browserify), see `.jshintrc` for ruleset
 - automatically inject sources into `index.html` so we don't have to add / remove sources manually
 - build everything into `.tmp` folder (also gitignored)
 - start local development server and serve from `.tmp`
 - start watchers to automatically lint javascript source files, compile scss and reload browser on changes
 
+#### Browserify support
+
+If you opted for browserify support all your sources will be kept in app/src instead of app/scripts.
+Please check app/src/app.js to see how modules can be added to your angular module.
+Browserify will automatically bundle only the code you require and you can require any module you installed with npm (provided they can be used in a webbrowser)
+
+If you opted for browserify support you have sourcemaps available in development mode.
+The script bundle and map file will be written in scripts/ and are .gitignored.
+The only other file in the scripts/ folder is the configuration.js file for your constants and other settings.
+
+See the browserify website for what you can and cannot do with browserify:
+http://browserify.org/
+
+If you need to add transpiling to browserify the location to do so has been marked in the gulpfile.js
 
 #### Build mode
 
@@ -70,7 +85,7 @@ By running just `gulp --build` or short `gulp -b`, we start gulp in build mode
 
 - concat all `.js` sources into single `app.js` file
 - version `main.css` and `app.js`
-- build everything into `www` 
+- build everything into `www`
 - remove debugs messages such as `console.log` or `alert` with passing `--release`
 
 
@@ -107,7 +122,7 @@ Replace `splash.png` and `icon.png` inside `/resources`. Then run `ionic resourc
 
 ### customizin themes
 
-Just override any Ionic variables in `app/styles/ionic-styles.scss`. 
+Just override any Ionic variables in `app/styles/ionic-styles.scss`.
 
 
 ## Changelog

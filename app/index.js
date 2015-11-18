@@ -1,10 +1,11 @@
 'use strict';
-var yeoman = require('yeoman-generator');
-var chalk = require('chalk');
-var yosay = require('yosay');
-var path = require('path');
+var yeoman = require( 'yeoman-generator' );
+var chalk  = require( 'chalk' );
+var yosay  = require( 'yosay' );
+var path   = require( 'path'  );
 
 var appPath = path.join(process.cwd(), 'app');
+
 
 module.exports = yeoman.generators.Base.extend({
   initializing: function () {
@@ -31,13 +32,13 @@ module.exports = yeoman.generators.Base.extend({
         type: 'input',
         name: 'userName',
         message: 'The author\'s name? (for config files)',
-        default : 'Your Name'
+        default : this.user.git.name || 'Your Name'
       },
       {
         type: 'input',
         name: 'userMail',
         message: 'Author email? (for config files)',
-        default : 'email@example.com'
+        default : this.user.git.email || 'email@example.com'
 
       }];
 

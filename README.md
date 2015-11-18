@@ -74,6 +74,18 @@ If you opted for browserify support you have sourcemaps available in development
 The script bundle and map file will be written in scripts/ and are .gitignored.
 The only other file in the scripts/ folder is the configuration.js file for your constants and other settings.
 
+NOTE: Beware that if you bundle (and uglify) angular modules you need to use the pattern where you provide an array with named parameters. See code below for an example of the difference.
+```
+// When not bundling you can do this
+.run( function( $ionicPlatform ) { ... } )
+
+// If you bundle you need to use the following pattern:
+.run( [ '$ionicPlatform', function( $ionicPlatform ) { ... } ] )
+
+// You can keep adding parameters like so:
+.run( [ '$ionicPlatform', '$q', '$http', function( $ionicPlatform, $q, $http ) { ... } ] )
+```
+
 See the browserify website for what you can and cannot do with browserify:
 http://browserify.org/
 

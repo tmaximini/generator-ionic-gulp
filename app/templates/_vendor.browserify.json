@@ -1,0 +1,5 @@
+[
+    "bower_components/ionic/release/js/ionic.bundle.js",
+    "bower_components/angular-resource/angular-resource.js",
+    "bower_components/ngCordova/dist/ng-cordova.js"
+]

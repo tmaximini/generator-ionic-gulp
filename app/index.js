@@ -1,10 +1,11 @@
 'use strict';
-var yeoman = require('yeoman-generator');
-var chalk = require('chalk');
-var yosay = require('yosay');
-var path = require('path');
+var yeoman = require( 'yeoman-generator' );
+var chalk  = require( 'chalk' );
+var yosay  = require( 'yosay' );
+var path   = require( 'path'  );
 
 var appPath = path.join(process.cwd(), 'app');
+
 
 module.exports = yeoman.generators.Base.extend({
   initializing: function () {
@@ -28,16 +29,22 @@ module.exports = yeoman.generators.Base.extend({
         default : this.appname // Default to current folder name
       },
       {
+        type: 'confirm',
+        name: 'browserify',
+        message: 'Would you like to use Browserify?',
+        default : false
+      },
+      {
         type: 'input',
         name: 'userName',
         message: 'The author\'s name? (for config files)',
-        default : 'Your Name'
+        default : this.user.git.name || 'Your Name'
       },
       {
         type: 'input',
         name: 'userMail',
         message: 'Author email? (for config files)',
-        default : 'email@example.com'
+        default : this.user.git.email || 'email@example.com'
 
       }];
 
@@ -45,6 +52,11 @@ module.exports = yeoman.generators.Base.extend({
         this.appName = props.appName;
         this.userName = props.userName;
         this.userMail = props.userMail;
+
+        // Store the Browserify preference for future sub-generator use
+        //
+        this.config.set( 'browserify', props.browserify );
+
         done();
       }.bind(this));
     },
@@ -67,15 +79,17 @@ module.exports = yeoman.generators.Base.extend({
   writing: {
 
     setup: function () {
+      var browserifyEnabled = this.config.get( 'browserify' ) === true;
+
       this.fs.copyTpl(
-        this.templatePath('_package.json'),
+        this.templatePath(browserifyEnabled ? '_package.browserify.json' : '_package.json'),
         this.destinationPath('package.json'),
         { appName: this._.underscored(this.appName),
           userName: this.userName,
           userEmail: this.userMail }
       );
       this.fs.copyTpl(
-        this.templatePath('_bower.json'),
+        this.templatePath(browserifyEnabled ? '_bower.browserify.json' : '_bower.json'),
         this.destinationPath('bower.json'),
         { appName: this._.classify(this.appName),
           userName: this.userName,
@@ -91,7 +105,7 @@ module.exports = yeoman.generators.Base.extend({
       );
 
       this.fs.copyTpl(
-        this.templatePath('_gulpfile.js'),
+        this.templatePath(browserifyEnabled ? '_gulpfile.browserify.js' : '_gulpfile.js'),
         this.destinationPath('gulpfile.js'),
         { ngModulName: this._.classify(this.appName) }
       );
@@ -101,7 +115,7 @@ module.exports = yeoman.generators.Base.extend({
         this.destinationPath('.editorconfig')
       );
       this.fs.copy(
-        this.templatePath('gitignore'),
+        this.templatePath(browserifyEnabled ? 'gitignore.browserify' : 'gitignore'),
         this.destinationPath('.gitignore')
       );
       this.fs.copy(
@@ -120,6 +134,7 @@ module.exports = yeoman.generators.Base.extend({
     },
 
     projectfiles: function () {
+      var browserifyEnabled = this.config.get( 'browserify' ) === true;
 
       this.directory('app', 'app');
       this.directory('hooks', 'hooks');
@@ -140,62 +155,113 @@ module.exports = yeoman.generators.Base.extend({
         { title: this.appName }
       );
 
-      // controllers
-      this.fs.copyTpl(
-        this.templatePath('scripts/homeController.js'),
-        this.destinationPath('app/scripts/controllers/homeController.js'),
-        { ngModulName: this._.classify(this.appName) }
-      );
+      if ( browserifyEnabled )
+      {
+        // config
+        this.fs.copyTpl(
+          this.templatePath('scripts/apiEndpoint.js'),
+          this.destinationPath('app/scripts/configuration.js'),
+          { ngModulName: this._.classify(this.appName) }
+        );
 
-      this.fs.copyTpl(
-        this.templatePath('scripts/mainController.js'),
-        this.destinationPath('app/scripts/controllers/mainController.js'),
-        { ngModulName: this._.classify(this.appName) }
-      );
+        // app
+        this.fs.copyTpl(
+          this.templatePath('src/app.js'),
+          this.destinationPath('app/src/app.js'),
+          { ngModulName: this._.classify(this.appName) }
+        );
 
-      this.fs.copyTpl(
-        this.templatePath('scripts/settingsController.js'),
-        this.destinationPath('app/scripts/controllers/settingsController.js'),
-        { ngModulName: this._.classify(this.appName) }
-      );
+        // controllers
+        this.fs.copyTpl(
+          this.templatePath('src/controllers/homeController.js'),
+          this.destinationPath('app/src/controllers/homeController.js'),
+          { ngModulName: this._.classify(this.appName) }
+        );
 
-      // services
-      this.fs.copyTpl(
-        this.templatePath('scripts/ExampleService.js'),
-        this.destinationPath('app/scripts/services/ExampleService.js'),
-        { ngModulName: this._.classify(this.appName) }
-      );
+        this.fs.copyTpl(
+          this.templatePath('src/controllers/mainController.js'),
+          this.destinationPath('app/src/controllers/mainController.js'),
+          { ngModulName: this._.classify(this.appName) }
+        );
 
-      this.fs.copyTpl(
-        this.templatePath('scripts/ApiService.js'),
-        this.destinationPath('app/scripts/services/ApiService.js'),
-        { ngModulName: this._.classify(this.appName) }
-      );
+        this.fs.copyTpl(
+          this.templatePath('src/controllers/settingsController.js'),
+          this.destinationPath('app/src/controllers/settingsController.js'),
+          { ngModulName: this._.classify(this.appName) }
+        );
 
-      // config
-      this.fs.copyTpl(
-        this.templatePath('scripts/apiEndpoint.js'),
-        this.destinationPath('app/scripts/config/apiEndpoint.js'),
-        { ngModulName: this._.classify(this.appName) }
-      );
+        // services
+        this.fs.copyTpl(
+          this.templatePath('src/services/ExampleService.js'),
+          this.destinationPath('app/src/services/ExampleService.js'),
+          { ngModulName: this._.classify(this.appName) }
+        );
 
-      // utils
-      this.fs.copyTpl(
-        this.templatePath('scripts/lodash.js'),
-        this.destinationPath('app/scripts/utils/lodash.js'),
-        { ngModulName: this._.classify(this.appName) }
-      );
+        this.fs.copyTpl(
+          this.templatePath('src/services/ApiService.js'),
+          this.destinationPath('app/src/services/ApiService.js'),
+          { ngModulName: this._.classify(this.appName) }
+        );
+      }
+      else
+      {
+        // controllers
+        this.fs.copyTpl(
+          this.templatePath('scripts/homeController.js'),
+          this.destinationPath('app/scripts/controllers/homeController.js'),
+          { ngModulName: this._.classify(this.appName) }
+        );
 
-      // app
+        this.fs.copyTpl(
+          this.templatePath('scripts/mainController.js'),
+          this.destinationPath('app/scripts/controllers/mainController.js'),
+          { ngModulName: this._.classify(this.appName) }
+        );
 
-      this.fs.copyTpl(
-        this.templatePath('scripts/app.js'),
-        this.destinationPath('app/scripts/app.js'),
-        { ngModulName: this._.classify(this.appName) }
-      );
+        this.fs.copyTpl(
+          this.templatePath('scripts/settingsController.js'),
+          this.destinationPath('app/scripts/controllers/settingsController.js'),
+          { ngModulName: this._.classify(this.appName) }
+        );
+
+        // services
+        this.fs.copyTpl(
+          this.templatePath('scripts/ExampleService.js'),
+          this.destinationPath('app/scripts/services/ExampleService.js'),
+          { ngModulName: this._.classify(this.appName) }
+        );
+
+        this.fs.copyTpl(
+          this.templatePath('scripts/ApiService.js'),
+          this.destinationPath('app/scripts/services/ApiService.js'),
+          { ngModulName: this._.classify(this.appName) }
+        );
+
+        // config
+        this.fs.copyTpl(
+          this.templatePath('scripts/apiEndpoint.js'),
+          this.destinationPath('app/scripts/config/apiEndpoint.js'),
+          { ngModulName: this._.classify(this.appName) }
+        );
+
+        // utils
+        this.fs.copyTpl(
+          this.templatePath('scripts/lodash.js'),
+          this.destinationPath('app/scripts/utils/lodash.js'),
+          { ngModulName: this._.classify(this.appName) }
+        );
+
+        // app
+
+        this.fs.copyTpl(
+          this.templatePath('scripts/app.js'),
+          this.destinationPath('app/scripts/app.js'),
+          { ngModulName: this._.classify(this.appName) }
+        );
+      }
 
       this.fs.copy(
-        this.templatePath('_vendor.json'),
+        this.templatePath(browserifyEnabled ? '_vendor.browserify.json' : '_vendor.json'),
         this.destinationPath('vendor.json')
       );
 

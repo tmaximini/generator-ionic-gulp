@@ -139,6 +139,9 @@ Just override any Ionic variables in `app/styles/ionic-styles.scss`.
 
 ## Changelog
 
+#### 1.3.3
+- bugfix for infinite livereload when using browserify
+
 #### 1.3.2
 - added optional browserify support
 

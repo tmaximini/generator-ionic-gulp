@@ -12,5 +12,5 @@ www/
 *.DS_Store
 *.log
 
-scripts/bundle.js
-scripts/bundle.js.map
+app/scripts/bundle.js
+app/scripts/bundle.js.map

@@ -143,7 +143,7 @@ Just override any Ionic variables in `app/styles/ionic-styles.scss`.
 - bugfix for infinite livereload when using browserify
 
 #### 1.3.2
-- added optional browserify support
+- added optional browserify support (thanks @Qwerios)
 
 #### 1.3.1
 - bump to ionic 1.1.0 which uses angular 1.4.x - changelog http://forum.ionicframework.com/t/1-1-0-xenon-xerus-released/30475

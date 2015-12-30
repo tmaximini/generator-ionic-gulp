@@ -66,7 +66,7 @@ var errorHandler = function(error) {
 
 // clean target dir
 gulp.task('clean', function(done) {
-  del([targetDir, 'app/scripts/bundle.js','app/scripts/bundle.js.map'], done);
+  return del([targetDir, 'app/scripts/bundle.js','app/scripts/bundle.js.map'], done);
 });
 
 // precompile .scss and concat with ionic.css

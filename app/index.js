@@ -89,7 +89,7 @@ module.exports = yeoman.generators.Base.extend({
           userEmail: this.userMail }
       );
       this.fs.copyTpl(
-        this.templatePath(browserifyEnabled ? '_bower.browserify.json' : '_bower.json'),
+        this.templatePath('_bower.json'),
         this.destinationPath('bower.json'),
         { appName: this._.classify(this.appName),
           userName: this.userName,

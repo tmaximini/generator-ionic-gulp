@@ -1,6 +1,7 @@
 # A [Yeoman](http://yeoman.io) generator for Ionic Projects with Gulp
 
 This is a yeoman generator for my [Ionic Gulp Seed](https://github.com/tmaximini/ionic-gulp-seed), a minimal Ionic app template. It sets up everything to get you started with [Gulp](http://gulpjs.com/) and [Ionic](http://ionicframework.com/) in no time.
+Currently using Ionic 1.2.1 and Angular 1.4.8
 
 
 ### Features
@@ -45,7 +46,8 @@ gulp
 ```
 to start up the build job and file watchers.
 
-In order to compile Sass, you need to have ruby and the sass ruby gem installed: `gem install sass`.
+~~In order to compile Sass, you need to have ruby and the sass ruby gem installed: `gem install sass`.~~
+Now using https://github.com/sass/node-sass instead
 
 ## Workflow
 

@@ -261,11 +261,6 @@ module.exports = yeoman.generators.Base.extend({
       }
 
       this.fs.copy(
-        this.templatePath(browserifyEnabled ? '_vendor.browserify.json' : '_vendor.json'),
-        this.destinationPath('vendor.json')
-      );
-
-      this.fs.copy(
         this.templatePath('splash.png'),
         this.destinationPath('resources/splash.png')
       );

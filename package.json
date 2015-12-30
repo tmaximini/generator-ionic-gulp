@@ -1,6 +1,6 @@
 {
   "name": "generator-ionic-gulp",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "A Yeoman generator for Ionic projects with gulp",
   "license": "MIT",
   "main": "app/index.js",

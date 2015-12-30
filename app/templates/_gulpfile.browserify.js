@@ -21,6 +21,7 @@ var buffer = require('vinyl-buffer');
 var uglify = require('gulp-uglify');
 var sourcemaps = require('gulp-sourcemaps');
 var gutil = require('gulp-util');
+var wiredep = require('wiredep');
 
 /**
  * Parse arguments
@@ -169,13 +170,6 @@ gulp.task('fonts', function() {
 });
 
 
-// copy templates
-gulp.task('templates', function() {
-  return gulp.src('app/templates/**/*.*')
-    .pipe(gulp.dest(path.join(targetDir, 'templates')))
-
-    .on('error', errorHandler);
-});
 
 // generate iconfont
 gulp.task('iconfont', function(){
@@ -215,7 +209,7 @@ gulp.task('jsHint', function() {
 
 // concatenate and minify vendor sources
 gulp.task('vendor', function() {
-  var vendorFiles = require('./vendor.json');
+  var vendorFiles = wiredep().js;
 
   return gulp.src(vendorFiles)
     .pipe(plugins.concat('vendor.js'))
@@ -325,7 +319,7 @@ gulp.task('watchers', function() {
   gulp.watch('app/icons/**', ['iconfont']);
   gulp.watch('app/images/**', ['images']);
   gulp.watch(['app/scripts/**/*.js','!app/scripts/bundle.js'], ['index']);
-  gulp.watch('./vendor.json', ['vendor']);
+  gulp.watch('./bower.json', ['vendor']);
   gulp.watch('app/templates/**/*.html', ['index']);
   gulp.watch('app/index.html', ['index']);
   gulp.watch('app/src/**/*.js', ['scripts']);
@@ -344,7 +338,6 @@ gulp.task('default', function(done) {
     'iconfont',
     [
       'fonts',
-      'templates',
       'styles',
       'images',
       'vendor'

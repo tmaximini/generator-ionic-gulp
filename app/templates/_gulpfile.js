@@ -15,6 +15,7 @@ var streamqueue = require('streamqueue');
 var runSequence = require('run-sequence');
 var merge = require('merge-stream');
 var ripple = require('ripple-emulator');
+var wiredep = require('wiredep');
 
 /**
  * Parse arguments
@@ -59,7 +60,7 @@ var errorHandler = function(error) {
 
 // clean target dir
 gulp.task('clean', function(done) {
-  del([targetDir], done);
+  return del([targetDir], done);
 });
 
 // precompile .scss and concat with ionic.css
@@ -145,14 +146,6 @@ gulp.task('fonts', function() {
 });
 
 
-// copy templates
-gulp.task('templates', function() {
-  return gulp.src('app/templates/**/*.*')
-    .pipe(gulp.dest(path.join(targetDir, 'templates')))
-
-    .on('error', errorHandler);
-});
-
 // generate iconfont
 gulp.task('iconfont', function(){
   return gulp.src('app/icons/*.svg', {
@@ -193,7 +186,7 @@ gulp.task('jsHint', function(done) {
 
 // concatenate and minify vendor sources
 gulp.task('vendor', function() {
-  var vendorFiles = require('./vendor.json');
+  var vendorFiles = wiredep().js;
 
   return gulp.src(vendorFiles)
     .pipe(plugins.concat('vendor.js'))
@@ -303,7 +296,7 @@ gulp.task('watchers', function() {
   gulp.watch('app/icons/**', ['iconfont']);
   gulp.watch('app/images/**', ['images']);
   gulp.watch('app/scripts/**/*.js', ['index']);
-  gulp.watch('./vendor.json', ['vendor']);
+  gulp.watch('./bower.json', ['vendor']);
   gulp.watch('app/templates/**/*.html', ['index']);
   gulp.watch('app/index.html', ['index']);
   gulp.watch(targetDir + '/**')
@@ -321,7 +314,6 @@ gulp.task('default', function(done) {
     'iconfont',
     [
       'fonts',
-      'templates',
       'styles',
       'images',
       'vendor'

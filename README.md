@@ -57,7 +57,7 @@ If you do not have / want gulp globally installed, you can run `npm run gulp` in
 By running just `gulp`, we start our development build process, consisting of:
 
 - compiling, concatenating, auto-prefixing of all `.scss` files required by `app/styles/main.scss`
-- creating `vendor.js` file from external sources defined in `./vendor.json`
+- creating `vendor.js` file from ~~external sources defined in `./vendor.json`~~ from `bower.json` using `wiredep`
 - linting all `*.js` files `app/scripts` (or src/ if using browserify), see `.jshintrc` for ruleset
 - automatically inject sources into `index.html` so we don't have to add / remove sources manually
 - build everything into `.tmp` folder (also gitignored)
@@ -138,6 +138,11 @@ Just override any Ionic variables in `app/styles/ionic-styles.scss`.
 
 
 ## Changelog
+
+#### 1.4.0
+- update to ionic 1.2.1, changelog http://blog.ionic.io/announcing-ionic-1-2/
+- remove `vendor.json` dependency, use `wiredep` instead, close #21
+- remove templates task #13
 
 #### 1.3.3
 - bugfix for infinite livereload when using browserify

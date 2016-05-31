@@ -141,6 +141,9 @@ Just override any Ionic variables in `app/styles/ionic-styles.scss`.
 
 ## Changelog
 
+#### 1.4.3 
+- update app template to ionic 1.3.0 / angular 1.5.3 / ngCordova 0.1.26-alpha
+
 #### 1.4.0
 - update to ionic 1.2.1, changelog http://blog.ionic.io/announcing-ionic-1-2/
 - remove `vendor.json` dependency, use `wiredep` instead, close #21

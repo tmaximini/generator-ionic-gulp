@@ -43,7 +43,7 @@
     "run-sequence": "^1.1.5",
     "shelljs": "^0.5.3",
     "streamqueue": "^1.1.1",
-    "wiredep": "^3.0.0",
+    "wiredep": "^4.0.0",
     "yargs": "^3.31.0",
     "browserify": "^12.0.1",
     "gulp-sourcemaps": "^1.6.0",

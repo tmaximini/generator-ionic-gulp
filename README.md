@@ -141,7 +141,10 @@ Just override any Ionic variables in `app/styles/ionic-styles.scss`.
 
 ## Changelog
 
-#### 1.5.0 
+#### 1.5.2
+- add ES6 support for browserify builds, thanks @mattrothenberg
+
+#### 1.5.0
 - update app template to ionic 1.3.0 / angular 1.5.3 / ngCordova 0.1.26-alpha
 
 #### 1.4.0

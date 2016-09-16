@@ -22,6 +22,7 @@ var uglify = require('gulp-uglify');
 var sourcemaps = require('gulp-sourcemaps');
 var gutil = require('gulp-util');
 var wiredep = require('wiredep');
+var babel = require('babelify');
 
 /**
  * Parse arguments
@@ -107,7 +108,7 @@ gulp.task('browserify', function () {
   var b = browserify({
     entries: './app/src/app.js',
     debug: !build
-  });
+  }).transform('babelify', {presets: ['es2015']});
 
   return b.bundle()
     .pipe(source('bundle.js'))
